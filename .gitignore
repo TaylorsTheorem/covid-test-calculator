@@ -3,3 +3,7 @@
 
 # Ignore IDE files and directories
 .vscode/
+__pycache__/
+
+# Ignore testing scripts
+testing.py
