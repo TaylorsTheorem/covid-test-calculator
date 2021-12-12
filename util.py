@@ -1,10 +1,24 @@
 import json
+import districts
 
-def get_data():
-    with open("data.txt", "r") as datafile:
-        return json.loads(datafile.read())
+''' Module with important calculations '''
 
-def get_district_list():
-    with open("district_list.txt", "r") as datafile:
-        return json.loads(datafile.read())
-    
+# Constants of the SARS-CoV-2-Rapid Antigen Tests from Roche, Germany
+TRUE_POSITIVE = 0.9652      # sensitivity
+TRUE_NEGATIVE = 0.9968      # sensibility
+FALSE_POSITIVE = 1 - TRUE_POSITIVE
+FALSE_NEGATIVE = 1 - TRUE_NEGATIVE
+
+# Probability of being infected in given district
+def infection_prob(distr: districts.District):
+    distr.incidence / 100000
+
+# Probability of actually being infected after a positive test
+def positive_predictive_value(distr: districts.District):
+    return (TRUE_POSITIVE * infection_prob(distr)) / \
+        (TRUE_POSITIVE * infection_prob(distr) * FALSE_POSITIVE * (1 - infection_prob(distr)))
+
+# Probability of actually being infected after a negative test
+def negative_predictive_value(distr: districts.District):
+    return (TRUE_NEGATIVE * infection_prob(distr)) / \
+        (TRUE_NEGATIVE * infection_prob(distr) * FALSE_NEGATIVE * (1 - infection_prob(distr)))
