@@ -1,19 +1,20 @@
 import json
-import util
+import util, districts
 
-data = util.get_data()
-district_list = util.get_district_list()
+''' Main running module '''
 
-def get_district_vals(data):
-    for i, val in enumerate(data):
-        print(i, val)
-        print(type(val))
+# Method to load data.txt
+def get_data():
+    with open("data.txt", "r") as datafile:
+        return json.loads(datafile.read())
 
-get_district_vals(data)
+# Start main
+def main():
 
-for i, val in enumerate(data):
-    if data[i]["Name"] != district_list[i]["Name"]:
-        print(data[i]["AdmUnitId"], district_list[i]["AdmUnitId"])
-        exit()
+    # Save data and district_list
+    data = get_data()
+    district_list = [districts.District(val) for val in data]
 
-print("All gud")
+# Init
+if __name__ == "__main__":
+    main()
