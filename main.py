@@ -15,7 +15,7 @@ def main():
     # Save data and district_list
     data = get_data()
     district_list = [districts.District(val) for val in data]
-    Gui(800,400,district_list)
+    Gui(1400,400,district_list)
 
 
 # Init
