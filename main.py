@@ -1,5 +1,6 @@
 import json
-import util, districts
+import districts
+from gui import Gui
 
 ''' Main running module '''
 
@@ -14,6 +15,8 @@ def main():
     # Save data and district_list
     data = get_data()
     district_list = [districts.District(val) for val in data]
+    Gui(800,400,district_list)
+
 
 # Init
 if __name__ == "__main__":

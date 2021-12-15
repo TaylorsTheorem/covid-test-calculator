@@ -11,7 +11,7 @@ FALSE_NEGATIVE = 1 - TRUE_NEGATIVE
 
 # Probability of being infected in given district
 def infection_prob(distr: districts.District):
-    distr.incidence / 100000
+    return distr.incidence / 100000
 
 # Probability of actually being infected after a positive test
 def positive_predictive_value(distr: districts.District):

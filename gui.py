@@ -1,36 +1,33 @@
 from guizero import App, Window, Text, PushButton, TextBox, Box
-from time import sleep
-window_width=500
+import util
 
-app = App(title="zua", width=window_width, height=500, layout="auto", visible=True,bg="#f9d900")
-app.font="Comic Sans MS"
+class Gui:
+    def __init__(self, width, height, district_list):
+        self.district_list = district_list
+        app = App(title="zua", width=width, height=height, layout="auto", visible=True,bg="gray")
+        app.font="Comic Sans MS"
+        
+        Text(app, text="Stadt oder Bundesland eingeben:", height=1, align="top", width="fill", visible=True)
+        self.input_field = TextBox(app, width=50, align="top", visible=True)
+        
+        box_content = Box(app, width=int(width/2), height=400, align="top", visible=True)
+        box_left = Box(box_content, width=int(width/4), height=400, align="left", visible=True)
+        box_right = Box(box_content, width=int(width/4), height=400, align="left", visible=True)
+        PushButton(box_left, width="fill", align="top", visible=True, command=self.get_pos_pred, text="Positive Predictive")
+        PushButton(box_right, width="fill", align="top", visible=True, command=self.get_neg_pred, text="Negative Predictive")
+        self.tx_left_district = Text(box_left, width="fill", align="top", visible=True, text="")
+        self.tx_left_value = Text(box_left, width="fill", align="top", visible=True, text="")
+        self.tx_right_district = Text(box_right, width="fill", align="top", visible=True, text="")
+        self.tx_right_value = Text(box_right, width="fill", align="top", visible=True, text="")
 
+        app.display()
 
+    def get_pos_pred(self):
+        district = next((x for x in self.district_list if x.name == self.input_field.value), None)
+        self.tx_left_district.value = district.name
+        self.tx_left_value.value = util.positive_predictive_value(district)
 
-def machschhalt():
-    Ausgabe.value = eingabe.value
-    Ausgabe.show()
-    sleep(0.2)
-    app.bg="red"
-    app.update()
-    sleep(0.2)
-    app.bg="blue"
-    app.update()
-    sleep(0.2)
-    app.bg="green"
-    app.update()
-    sleep(0.2)
-    app.bg="#f9d900"
-    app.update()
-    return
-
-
-eingabe = TextBox(app, "Suche", width=int(window_width/2), height=60, align="top", visible=True)
-box = Box(app, height=60, width=window_width/2, align="top", visible=True)
-PushButton(box, width="fill", align="left", visible=True, command=machschhalt, text="jscho")
-PushButton(box, width="fill", align="right", visible=True, command=machschhalt, text="haltau")
-noch_ne_box = Box(app, height=100, width=int(window_width/2), visible=True, align="top")
-Ausgabe = Text(noch_ne_box, text="", width=int(window_width/2),align="bootm", visible=False)
-
-
-app.display()
+    def get_neg_pred(self):
+        district = next((x for x in self.district_list if x.name == self.input_field.value), None)
+        self.tx_right_district.value = district.name
+        self.tx_right_value.value = util.negative_predictive_value(district)
